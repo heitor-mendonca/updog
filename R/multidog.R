@@ -352,7 +352,8 @@ multidog <- function(refmat,
   p2_ref <- NULL
   p2_size <- NULL
   cat(paste0("Processing ", length(snplist), " SNPs...\n"))
-  retlist <- foreach::foreach(current_snp   = iterators::iter(snplist),
+  retlist <- foreach::foreach(i = seq_along(snplist),
+                              current_snp   = iterators::iter(snplist),
                               refvec        = iterators::iter(refmat, by = "row"),
                               sizevec       = iterators::iter(sizemat, by = "row"),
                               p1_ref        = iterators::iter(p1_refvec),
@@ -362,6 +363,7 @@ multidog <- function(refmat,
                               .export       = c("flexdog"),
                               .combine      = combine_flex,
                               .multicombine = TRUE) %dorng% {
+    cat(sprintf("  SNP %d / %d: %s\n", i, length(snplist), current_snp))
 
                                 if (is.na(p1_ref) || is.na(p1_size)) {
                                   p1_ref <- NULL
