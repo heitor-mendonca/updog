@@ -351,6 +351,7 @@ multidog <- function(refmat,
   p1_size <- NULL
   p2_ref <- NULL
   p2_size <- NULL
+  cat(paste0("Processing ", length(snplist), " SNPs...\n"))
   retlist <- foreach::foreach(current_snp   = iterators::iter(snplist),
                               refvec        = iterators::iter(refmat, by = "row"),
                               sizevec       = iterators::iter(sizemat, by = "row"),
