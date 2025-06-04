@@ -382,7 +382,7 @@ multidog <- function(refmat,
                                                 p2size    = p2_size,
                                                 snpname   = current_snp,
                                                 bias_init = bias_init,
-                                                verbose   = FALSE,
+                                                verbose   = TRUE,
                                                 prior_vec = prior_vec,
                                                 ...
                                                 )
