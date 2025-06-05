@@ -351,7 +351,12 @@ multidog <- function(refmat,
   p1_size <- NULL
   p2_ref <- NULL
   p2_size <- NULL
+  retlist <- NULL
   cat(paste0("Processing ", length(snplist), " SNPs...\n"))
+  progressr::handlers('cli')
+  progressr::with_progress({
+    p <- progressr::progressor(steps = length(snplist))
+    
   retlist <- foreach::foreach(i = seq_along(snplist),
                               current_snp   = iterators::iter(snplist),
                               refvec        = iterators::iter(refmat, by = "row"),
@@ -363,8 +368,8 @@ multidog <- function(refmat,
                               .export       = c("flexdog"),
                               .combine      = combine_flex,
                               .multicombine = TRUE) %dorng% {
-    cat(sprintf("  SNP %d / %d: %s\n", i, length(snplist), current_snp))
-
+    
+                               p(message = paste("Processing SNP:", current_snp))
                                 if (is.na(p1_ref) || is.na(p1_size)) {
                                   p1_ref <- NULL
                                   p1_size <- NULL
@@ -445,6 +450,7 @@ multidog <- function(refmat,
 
                                 list(snpdf = snpprop, inddf = indprop)
                               }
+    })
 
   names(retlist) <- c("snpdf", "inddf")
   attr(retlist, "rng") <- NULL
